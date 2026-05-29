@@ -26,6 +26,12 @@ on:
       - 'kernel/**'
       - 'userspace/**'
   workflow_call:
+    inputs:
+      spoof_package_name:
+        description: 'Custom applicationId for spoofed manager build (empty = default com.sukisu.ultra)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   generate-key:
@@ -164,10 +170,14 @@ jobs:
 
       - name: Build with Gradle
         run: |
+          EXTRA_ARGS=""
+          if [ -n "${{ inputs.spoof_package_name }}" ]; then
+            EXTRA_ARGS="-PSPOOF_PACKAGE_NAME=${{ inputs.spoof_package_name }}"
+          fi
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ./gradlew clean assembleRelease -PIS_PR_BUILD=true
+            ./gradlew clean assembleRelease -PIS_PR_BUILD=true $EXTRA_ARGS
           else
-            ./gradlew clean assembleRelease
+            ./gradlew clean assembleRelease $EXTRA_ARGS
           fi
 
       - name: Upload build artifact
