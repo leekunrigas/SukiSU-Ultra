@@ -33,10 +33,11 @@ val baseCFlags = listOf(
 )
 val baseCppFlags = baseCFlags + "-fno-rtti"
 
+val spoofPackageName = project.findProperty("SPOOF_PACKAGE_NAME")?.toString()?.trim() ?: ""
+
 android {
     namespace = "com.sukisu.ultra"
     val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
-    val spoofPackageName = project.findProperty("SPOOF_PACKAGE_NAME")?.toString()?.trim() ?: ""
 
     buildTypes {
         debug {
