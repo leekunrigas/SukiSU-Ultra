@@ -36,6 +36,7 @@ val baseCppFlags = baseCFlags + "-fno-rtti"
 android {
     namespace = "com.sukisu.ultra"
     val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
+    val spoofPackageName = project.findProperty("SPOOF_PACKAGE_NAME")?.toString()?.trim() ?: ""
 
     buildTypes {
         debug {
@@ -121,6 +122,10 @@ android {
         versionCode = managerVersionCode
         versionName = managerVersionName
 
+        if (spoofPackageName.isNotEmpty()) {
+            applicationId = spoofPackageName
+        }
+
         buildConfigField("boolean", "IS_PR_BUILD", isPrBuild.toString())
 
         externalNativeBuild {
@@ -154,8 +159,9 @@ androidComponents {
 }
 
 base {
+    val nameSuffix = if (spoofPackageName.isNotEmpty()) "_spoofed" else ""
     archivesName.set(
-        "SukiSU_${managerVersionName}_${managerVersionCode}"
+        "SukiSU_${managerVersionName}_${managerVersionCode}${nameSuffix}"
     )
 }
 
