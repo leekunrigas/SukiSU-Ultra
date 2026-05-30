@@ -1,0 +1,16 @@
+name: Build Spoofed Manager
+
+on:
+  workflow_dispatch:
+    inputs:
+      spoof_package_name:
+        description: 'Package name to disguise the manager as (e.g. com.android.systemui)'
+        required: false
+        default: 'com.android.systemui'
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-manager.yml
+    with:
+      spoof_package_name: ${{ inputs.spoof_package_name }}
+    secrets: inherit
