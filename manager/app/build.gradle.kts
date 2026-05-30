@@ -155,7 +155,7 @@ android {
 
 androidComponents {
     onVariants(selector().withBuildType("release")) {
-        it.packaging.resources.excludes.addAll(listOf("META-INF/**", "kotlin/**", "")).bin"))
+        it.packaging.resources.excludes.addAll(listOf("META-INF/**", "kotlin/**", "**.bin"))
     }
 }
 
